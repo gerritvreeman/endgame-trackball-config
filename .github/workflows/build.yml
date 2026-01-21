@@ -8,6 +8,7 @@ jobs:
     outputs:
       release_version: ${{ steps.release_version.outputs.value }}
       archive_name: ${{ steps.archive_name.outputs.value }}
+      release_name: ${{ steps.release_name.outputs.value }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,6 +25,9 @@ jobs:
             exit 1
           fi
           echo "value=endgame-${major}.${minor}.${patch}" >> "$GITHUB_OUTPUT"
+      - name: Set release name
+        id: release_name
+        run: echo "value=${{ steps.release_version.outputs.value }}" >> "$GITHUB_OUTPUT"
       - name: Set archive name
         id: archive_name
         run: echo "value=firmware" >> "$GITHUB_OUTPUT"
@@ -50,8 +54,8 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.meta.outputs.archive_name }}
-          name: "${{ needs.meta.outputs.archive_name }}"
+          tag_name: ${{ needs.meta.outputs.release_version }}
+          name: "${{ needs.meta.outputs.release_name }}"
           files: |
             ./*.uf2
           draft: false
