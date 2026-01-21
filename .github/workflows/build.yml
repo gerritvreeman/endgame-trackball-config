@@ -26,7 +26,7 @@ jobs:
           echo "value=endgame-${major}.${minor}.${patch}" >> "$GITHUB_OUTPUT"
       - name: Set archive name
         id: archive_name
-        run: echo "value=${{ steps.release_version.outputs.value }}" >> "$GITHUB_OUTPUT"
+        run: echo "value=firmware" >> "$GITHUB_OUTPUT"
 
   build:
     needs: meta
